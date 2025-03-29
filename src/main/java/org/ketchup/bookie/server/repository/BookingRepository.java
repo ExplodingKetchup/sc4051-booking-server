@@ -34,7 +34,14 @@ public class BookingRepository implements InitializingBean {
 
     private final Map<Integer, Booking> bookingMap = new ConcurrentHashMap<>();
 
+    public boolean isBookingIdExist(int bookingIdToCheck) {
+        return bookingMap.containsKey(bookingIdToCheck);
+    }
+
     public boolean addBooking(Booking booking) {
+        if (getSlotIdx(booking.getBookingTimeStart()) < firstSlotIdx) {
+            throw new IllegalArgumentException("[addBooking] Booking is made for time slots in the past");
+        }
         if (checkFacilityAvailability(booking.getFacilityId(), booking.getBookingTimeStart(), booking.getBookingTimeSlots())) {
             long slotIdxOffset = getSlotIdx(booking.getBookingTimeStart());
             for (int slotIdx = 0; slotIdx < booking.getBookingTimeSlots(); slotIdx++) {

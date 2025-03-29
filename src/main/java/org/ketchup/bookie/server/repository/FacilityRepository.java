@@ -8,10 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @Slf4j
@@ -26,7 +23,7 @@ public class FacilityRepository implements InitializingBean {
     }
 
     public Facility getFacilityById(int facilityId) {
-        return facilities.get(facilityId);
+        return Optional.ofNullable(facilities.get(facilityId)).orElse(Facility.NULL_INSTANCE);
     }
 
     public List<Facility> getFacilitiesByName(String name) {
