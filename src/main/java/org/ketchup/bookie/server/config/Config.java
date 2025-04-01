@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 @Getter
 public class Config {
 
-    @Value("${server.port}")
+    @Value("${server.port:55555}")
     private int port;
+
+    @Value("${server.at_most_once.enabled:false}")
+    private boolean atMostOnceEnabled;
 
 }

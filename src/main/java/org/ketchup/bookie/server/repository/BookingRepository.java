@@ -2,19 +2,15 @@ package org.ketchup.bookie.server.repository;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ketchup.bookie.common.exception.InternalServerError;
+import org.ketchup.bookie.common.exception.UnavailableFacilityException;
 import org.ketchup.bookie.common.pojo.Booking;
 import org.ketchup.bookie.common.pojo.Facility;
 import org.ketchup.bookie.server.config.Constants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,12 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @NoArgsConstructor
 public class BookingRepository implements InitializingBean {
 
-    private long currentTimestamp;
-    private long firstSlotIdx;
-    private long lastSlotIdx;
-
-    // facilityId : { slotIdx : bookingId }
-    private final Map<Integer, Map<Long, Integer>> bookingTimeslots = new ConcurrentHashMap<>();
+    // facilityId : { time : bookingId }
+    private final Map<Integer, List<Integer>> bookingTimeslots = new ConcurrentHashMap<>();
 
     private final Map<Integer, Booking> bookingMap = new ConcurrentHashMap<>();
 
@@ -38,14 +30,23 @@ public class BookingRepository implements InitializingBean {
         return bookingMap.containsKey(bookingIdToCheck);
     }
 
-    public boolean addBooking(Booking booking) {
-        if (getSlotIdx(booking.getBookingTimeStart()) < firstSlotIdx) {
-            throw new IllegalArgumentException("[addBooking] Booking is made for time slots in the past");
+    public Booking queryBooking(int bookingId) {
+        return Optional.ofNullable(bookingMap.get(bookingId)).orElse(Booking.NULL_INSTANCE);
+    }
+
+    public boolean addBooking(Booking booking) throws UnavailableFacilityException {
+        if (booking.getBookingStartTime() < 0 ||
+                booking.getBookingEndTime() <= booking.getBookingStartTime() ||
+                booking.getBookingEndTime() > Constants.MINUTES_IN_WEEK
+        ) {
+            throw new IllegalArgumentException("[addBooking] Invalid booking time");
         }
-        if (checkFacilityAvailability(booking.getFacilityId(), booking.getBookingTimeStart(), booking.getBookingTimeSlots())) {
-            long slotIdxOffset = getSlotIdx(booking.getBookingTimeStart());
-            for (int slotIdx = 0; slotIdx < booking.getBookingTimeSlots(); slotIdx++) {
-                bookingTimeslots.get(booking.getFacilityId()).put(slotIdx + slotIdxOffset, booking.getBookingId());
+        if (bookingMap.containsKey(booking.getBookingId())) {
+            throw new IllegalArgumentException("[addBooking] Booking with the same ID already exists");
+        }
+        if (checkAvailability(booking.getFacilityId(), booking.getBookingStartTime(), booking.getBookingEndTime())) {
+            for (int time = booking.getBookingStartTime(); time < booking.getBookingEndTime(); time++) {
+                bookingTimeslots.get(booking.getFacilityId()).set(time, booking.getBookingId());
             }
             bookingMap.put(booking.getBookingId(), booking);
             return true;
@@ -53,97 +54,81 @@ public class BookingRepository implements InitializingBean {
         return false;
     }
 
-    public boolean checkFacilityAvailability(int facilityId, long startingTimestamp, int nSlots) {
-        if (nSlots <= 0) {
-            log.error("[checkFacilityAvailability] Number of slot must be at least 1");
-            throw new IllegalArgumentException("[checkFacilityAvailability] Number of slot must be at least 1");
-        }
-        long slotIdxOffset = getSlotIdx(startingTimestamp);
-        for (int slotIdx = 0; slotIdx < nSlots; slotIdx++) {
-            if (getBookingIdForFacilityAtSlot(facilityId, slotIdx + slotIdxOffset) < 0) {
-                return false;
+    public boolean removeBooking(int bookingId) {
+        if (!bookingMap.containsKey(bookingId)) return false;
+        Booking booking = bookingMap.get(bookingId);
+        for (int time = booking.getBookingStartTime(); time < booking.getBookingEndTime(); time++) {
+            int currentBookingIdAtSlot = bookingTimeslots.get(booking.getFacilityId()).get(time);
+            if (currentBookingIdAtSlot != bookingId) {
+                InternalServerError ise = new InternalServerError("Inconsistency between bookingTimeslots and bookingMap found: " +
+                        "Time [" + time + "] belongs to both booking [" + bookingId + "] (bookingMap) and booking " +
+                        "[" + currentBookingIdAtSlot + "] (bookingTimeslots)");
+                log.error("[removeBooking]", ise);
+                throw ise;
             }
+            bookingTimeslots.get(booking.getFacilityId()).set(time, -1);
+        }
+        bookingMap.remove(bookingId);
+        return true;
+    }
+
+    public boolean changeBooking(int bookingId, int offset) throws UnavailableFacilityException {
+        Booking originalBooking = bookingMap.get(bookingId);
+        if (!removeBooking(bookingId)) return false;
+        return addBooking(new Booking(
+                originalBooking.getBookingId(),
+                originalBooking.getFacilityId(),
+                originalBooking.getBookingStartTime() + offset,
+                originalBooking.getBookingEndTime() + offset
+        ));
+    }
+
+    public boolean extendBooking(int bookingId, int offset) throws UnavailableFacilityException {
+        Booking originalBooking = bookingMap.get(bookingId);
+        if (!removeBooking(bookingId)) return false;
+        return addBooking(new Booking(
+                originalBooking.getBookingId(),
+                originalBooking.getFacilityId(),
+                originalBooking.getBookingStartTime(),
+                originalBooking.getBookingEndTime() + offset
+        ));
+    }
+
+    /**
+     *
+     * @param facilityId
+     * @param startTime Inclusive
+     * @param endTime   Exclusive
+     * @return
+     */
+    public boolean checkAvailability(int facilityId, int startTime, int endTime) throws UnavailableFacilityException {
+        List<Integer> facilityAvailability = Optional.ofNullable(bookingTimeslots.get(facilityId)).orElseThrow(UnavailableFacilityException::new);
+        for (int time = startTime; time < endTime; time++) {
+            if (facilityAvailability.get(time) > 0) return false;
         }
         return true;
     }
 
-    public int getBookingIdForFacilityAtSlot(int facilityId, long slotIdx) {
-        try {
-            return Optional.ofNullable(bookingTimeslots.get(facilityId).get(slotIdx)).orElse(-1);
-        } catch (NullPointerException npe) {
-            log.error("[getBookingIdForFacilityAtSlot] Facility Id may not exist");
-            throw new IllegalArgumentException("[getBookingIdForFacilityAtSlot] Facility Id may not exist");
-        }
+    public List<Boolean> exportAvailability(int facilityId) {
+        return bookingTimeslots.get(facilityId).stream().map(bookingId -> bookingId >= 0).toList();
     }
 
     public void addFacility(Facility facility) {
-        bookingTimeslots.put(facility.getId(), new ConcurrentHashMap<>((int) (lastSlotIdx - firstSlotIdx + 1)));
-        refresh();
+        bookingTimeslots.putIfAbsent(facility.getId(), new ArrayList<>(Constants.MINUTES_IN_WEEK));
     }
 
     public void addAllFacilities(List<Facility> facilityList) {
         for (Facility facility : facilityList) {
-            if (!bookingTimeslots.containsKey(facility.getId())) {
-                bookingTimeslots.put(facility.getId(), new ConcurrentHashMap<>((int) (lastSlotIdx - firstSlotIdx + 1)));
-            }
+            addFacility(facility);
         }
-        refresh();
     }
 
     public void dropFacility(Facility facility) {
         bookingMap.remove(facility.getId());
     }
 
-    public void refresh() {
-        currentTimestamp = System.currentTimeMillis();
-        calculateFirstSlotIdx();
-        calculateLastSlotIdx();
-        // Throw away old records (bookingTimeslots)
-        for (Integer facilityId : bookingTimeslots.keySet()) {
-            Map<Long, Integer> facilityRecord = bookingTimeslots.get(facilityId);
-            facilityRecord.forEach((slotIdx, bookingId) -> {
-                if (slotIdx < firstSlotIdx) {
-                    facilityRecord.remove(slotIdx);
-                }
-            });
-        }
-        // Add new slots (bookingTimeslots)
-        for (long slotIdx = firstSlotIdx; slotIdx <= lastSlotIdx; slotIdx++) {
-            for (Integer facilityId : bookingTimeslots.keySet()) {
-                bookingTimeslots.get(facilityId).putIfAbsent(slotIdx, -1);
-            }
-        }
-        // Remove expired bookings
-        for (Integer bookingId : bookingMap.keySet()) {
-            Booking booking = bookingMap.get(bookingId);
-            if (getSlotIdx(booking.getBookingTimeStart()) + booking.getBookingTimeSlots() - 1 < firstSlotIdx) {
-                bookingMap.remove(bookingId);
-            }
-        }
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
 
-    }
-
-    private long getSlotIdx(long slotStartingTimestamp) {
-        return (slotStartingTimestamp / Constants.BOOKING_SLOT_LENGTH_MILLIS) + (slotStartingTimestamp % Constants.BOOKING_SLOT_LENGTH_MILLIS > 0 ? 1 : 0);
-    }
-
-    private void calculateFirstSlotIdx() {
-        firstSlotIdx = getSlotIdx(currentTimestamp);
-    }
-
-    private void calculateLastSlotIdx() {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate targetDate = currentDate.plusDays(8);
-        LocalDateTime targetDateTime = targetDate.atStartOfDay();
-        long unixTimestamp = targetDateTime.toEpochSecond(ZoneOffset.UTC) * 1000L;
-        lastSlotIdx = getSlotIdx(unixTimestamp) - 1;
-    }
-
-    private long normalizeSlotTimestamp(long slotStartingTimestamp) {
-        return getSlotIdx(slotStartingTimestamp) * Constants.BOOKING_SLOT_LENGTH_MILLIS;
     }
 }

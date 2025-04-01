@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum FacilityType {
+public enum FacilityType implements SerializableEnum {
     MEETING_ROOM(0),
     STANDARD_CLASSROOM(1),
     LECTURE_THEATER(2),

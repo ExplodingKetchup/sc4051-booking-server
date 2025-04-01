@@ -30,6 +30,10 @@ public class FacilityRepository implements InitializingBean {
         return facilities.values().stream().filter(facility -> StringUtils.equals(name, facility.getName())).toList();
     }
 
+    public List<Facility> listAllFacilities() {
+        return facilities.values().stream().toList();
+    }
+
     public void loadFromCsv() throws IOException {
         CsvUtils.readFacilitiesFromCsv().forEach(facility -> facilities.put(facility.getId(), facility));
     }
