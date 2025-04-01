@@ -7,24 +7,55 @@ UDP
 
 Note that boolean-like responses are not listed here. All boolean-like responses can be obtained by checking the status of `Response`.
 
-`QUERY_AVAILABILITY`
+### `QUERY_AVAILABILITY`
 - Request:
   - "facilityId" : `int`
-  - "checkTimeStart" : `long`
-  - "checkTimeEnd" : `long`
-- Response: None
+  - "checkTimeStart" : `int`
+  - "checkTimeEnd" : `int`
+- Response: Empty success / Application error
 
-`BOOK_FACILITY`
+### `BOOK_FACILITY`
 - Request: 
-  - "booking" : `Booking`
+  - "facilityId" : `int`
+  - "bookingStartTime" : `int`
+  - "bookingEndTime" : `int`
 - Response: 
-  - "bookingId" : `int`
+  - "bookingId" : `int`, OR
+  - Application error
 
-`CHANGE_BOOKING`
+### `CHANGE_BOOKING`
 - Request:
   - "bookingId" : `int`
-  - "offsetTimeSlots": `int`
-- Response: None
+  - "offsetTime": `int`
+- Response: Empty success / Application error
+
+### `MONITOR_FACILITY`
+- Request:
+  - "facilityId" : `int`
+  - "duration" : `int` (minutes)
+- Response: Empty success / Application error
+- Callback: (also a Response with its requestId set to the requestId of the initial request. Will be sent to the IP address and port from which the client send the request)
+  - "availability" : `Object`
+
+Note: "availability" is of type `org.ketchup.bookie.common.pojo.Availability`, which has 2 fields: `facilityId` (`int`) and `booked` (`List<Boolean>`).
+  - `booked` is a list representing if a facility is booked at the time corresponding to its index.
+  - `booked` is serialized to a byte array, each 8 members of the list is mapped to a byte (`booked[0]`...`booked[7]` -> `bytes[0]`, `booked[8]`...`booked[15]` -> `bytes[1]`, and so on). In each byte, the member with the lowest index will be mapped to the most significant bit of the byte.
+
+### `LIST_FACILITIES`
+- Request: Empty
+- Response:
+  - "facility-<n>" : `Object`
+  - ...
+
+Note:
+- "facility-<n>" is a placeholder, which means "facility-0", "facility-1", and so on. "<n>" corresponds to the index of the facility.
+- "facility-<n>" values are of type `org.ketchup.bookie.common.pojo.Facility`.
+
+### `EXTEND_BOOKING`
+- Request: 
+  - "bookingId" : `int`
+  - "offsetTime" : `int`
+- Response: Empty success / Application error
 
 ## Message Serialization
 
@@ -79,6 +110,10 @@ Type of data:
 08 -> List
 09 -> Object
 ```
+
+### Notes on datetime
+Each datetime value (only covers date and time in a week) includes days of week, hour, and minutes.
+A datetime value is represented in the parameters and return data as an `int`. This number is the number of minutes from Monday, 00.00 (the `int` representation for Monday, 00.00 is 0).
 
 ### Notes on implementation
 While Map and Object share the same format, for Object, each serialized object must implement `org.ketchup.bookie.common.pojo.BinarySerializable` interface, which includes specifying how to serialize/deserialize.

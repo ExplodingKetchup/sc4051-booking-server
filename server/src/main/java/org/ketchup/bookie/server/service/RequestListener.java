@@ -182,8 +182,8 @@ public class RequestListener implements InitializingBean {
             case MONITOR_FACILITY -> {
                 try {
                     int facilityId = SerializeUtils.deserializeInt(request.getParameters().get("facilityId"));
-                    int monitorDuration = SerializeUtils.deserializeInt(request.getParameters().get("monitorDuration"));
-                    availabilityMonitoringService.addToMailingList(request.getRequestId(), clientAddress, clientPort, facilityId, monitorDuration);
+                    int duration = SerializeUtils.deserializeInt(request.getParameters().get("duration"));
+                    availabilityMonitoringService.addToMailingList(request.getRequestId(), clientAddress, clientPort, facilityId, duration);
                     yield Response.success(request.getRequestId());
                 } catch (SerializationException se) {
                     throw new MalformedRequestException("[handleClientRequest] Bad params for MONITOR_FACILITY", se);
