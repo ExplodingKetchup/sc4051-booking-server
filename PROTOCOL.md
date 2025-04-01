@@ -123,3 +123,42 @@ In theory, we can perform Object serialization/deserialization similar to a Map.
 All Enums must implement `org.ketchup.bookie.common.enums.SerializableEnum`, which requires each enum value to be associated with a unique number.
 
 For serialization, the `getValue()` method will be used. On deserialization, although not specified in the `SerializableEnum` interface, each enum must implement a static `fromValue(Integer)` method to convert integers to enum values.
+
+### Request / Response
+Each `Request` has a `Map<String, byte[]> parameters`\
+Each `Response` has a `Map<String, byte[]> parameters`\
+The key of these maps are the left-hand-side string values listed in "Operation Parameters and Return Values", while the value is a serialized byte string of the type specified on the right-hand-side values.
+
+For example, in `MONITOR_FACILITY`
+- Request:
+  - "facilityId" : `int`
+
+This corresponds to a Map entry in `Request.parameters`, as follows:
+```
+{ "facilityId" : <serialized_int_object> }
+```
+where `<serialized_int_object>` is the facilityId (`int`), serialized to byte string using the same format mentioned in "Message Serialization".
+
+## Examples
+For `BOOK_FACILITY`
+
+Create a request:
+
+```java
+Map<String, byte[]> parametersMap =
+        Map.of(
+                "facilityId", SerializeUtils.serializeInt(facilityId),
+                "bookingTimeStart", SerializeUtils.serializeInt(bookingTimeStart),
+                "bookingTimeEnd", SerializeUtils.serializeInt(bookingTimeEnd)
+        );
+Request request = new Request(BOOK_FACILITY, parametersMap);
+byte[] marshalledRequest = request.toBytes();
+```
+
+Reading a response:
+```java
+Response response = new Response();
+response.fromBytes(marshalledResponse);
+boolean status = response.isStatus();
+int bookingId = SerializeUtils.deserializeInt(response.getData().get("bookingId"));
+```
