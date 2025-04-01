@@ -88,6 +88,7 @@ public final class Response implements BinarySerializable {
         // data
         bytes = SerializeUtils.verifyObjectField(bytes, "data");
         Map<String, Object> dataValue = SerializeUtils.deserializeMap(bytes, SerializableDataType.BYTES);
+        data = new HashMap<>();
         dataValue.forEach((key, value) -> data.put(key, (byte[]) value));
     }
 }

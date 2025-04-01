@@ -40,7 +40,7 @@ public class Availability implements BinarySerializable {
     private void bookedFromBytes(byte[] bytes) {
         booked = new ArrayList<>(MINS_IN_WEEK);
         for (byte aByte : bytes) {
-            while (aByte != 0) {
+            for (int i = 0; i < 8; i++) {
                 booked.add((aByte & (byte) 0x80) != 0);
                 aByte = (byte) (aByte << 1);
             }
@@ -49,7 +49,7 @@ public class Availability implements BinarySerializable {
 
     @Override
     public byte[] toBytes() throws SerializationException {
-        byte[] facilityIdKey = SerializeUtils.serializeString("facilityIdKey");
+        byte[] facilityIdKey = SerializeUtils.serializeString("facilityId");
         byte[] facilityIdValue = SerializeUtils.serializeInt(facilityId);
         byte[] bookedKey = SerializeUtils.serializeString("booked");
         byte[] bookedValue = SerializeUtils.serializeBytes(bookedAsBytes());

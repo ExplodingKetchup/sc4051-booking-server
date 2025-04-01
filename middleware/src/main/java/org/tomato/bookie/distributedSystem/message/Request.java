@@ -32,7 +32,7 @@ public final class Request implements BinarySerializable {
             this.value = value;
         }
 
-        public static Operation fromValue(int value) {
+        public static Operation fromValue(Integer value) {
             return switch (value) {
                 case 0 -> QUERY_AVAILABILITY;
                 case 1 -> BOOK_FACILITY;
@@ -99,6 +99,7 @@ public final class Request implements BinarySerializable {
         // parameters
         bytes = SerializeUtils.verifyObjectField(bytes, "parameters");
         Map<String, Object> parametersValue = SerializeUtils.deserializeMap(bytes, SerializableDataType.BYTES);
+        parameters = new HashMap<>();
         parametersValue.forEach((key, value) -> parameters.put(key, (byte[]) value));
 
         // idempotent

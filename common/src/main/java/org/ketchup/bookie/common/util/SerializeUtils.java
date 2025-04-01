@@ -259,6 +259,7 @@ public class SerializeUtils {
             log.error("[deserializeMap] Invalid length of map value");
             throw new SerializationException("[deserializeMap] Invalid length of map value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         Map<String, Object> result = new HashMap<>(mapSize);
         for (int i = 0; i < mapSize; i++) {
             // Read key
@@ -293,6 +294,7 @@ public class SerializeUtils {
             log.error("[deserializeMapEnumValue] Invalid length of map value");
             throw new SerializationException("[deserializeMapEnumValue] Invalid length of map value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         Map<String, Object> result = new HashMap<>(mapSize);
         for (int i = 0; i < mapSize; i++) {
             // Read key
@@ -316,6 +318,7 @@ public class SerializeUtils {
             log.error("[deserializeMapObjectValue] Invalid length of map value");
             throw new SerializationException("[deserializeMapObjectValue] Invalid length of map value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         Map<String, Object> result = new HashMap<>(mapSize);
         for (int i = 0; i < mapSize; i++) {
             // Read key
@@ -345,6 +348,7 @@ public class SerializeUtils {
             log.error("[deserializeList] Invalid length of list value");
             throw new SerializationException("[deserializeList] Invalid length of list value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         List<Object> result = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
             // Read member
@@ -374,6 +378,7 @@ public class SerializeUtils {
             log.error("[deserializeListEnumValue] Invalid length of list value");
             throw new SerializationException("[deserializeListEnumValue] Invalid length of list value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         List<Object> result = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
             // Read value
@@ -392,6 +397,7 @@ public class SerializeUtils {
             log.error("[deserializeListEnumValue] Invalid length of list value");
             throw new SerializationException("[deserializeListEnumValue] Invalid length of list value");
         }
+        bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
         List<Object> result = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
             // Read value
@@ -423,6 +429,7 @@ public class SerializeUtils {
 
     /**
      * Read the header of a value type, verify the header's correctness and return the size of the object.
+     * Does not check sizes.
      * @param bytes
      * @param dataType
      * @return
@@ -438,7 +445,7 @@ public class SerializeUtils {
             throw new SerializationException("Wrong header for type " + dataType.name());
         }
         // Read the size bytes
-        byte[] sizeBytes = Arrays.copyOfRange(headerBytes, 0, 4);
+        byte[] sizeBytes = Arrays.copyOfRange(headerBytes, 1, 5);
         ByteBuffer buffer = ByteBuffer.wrap(sizeBytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN); // Set byte order to little-endian
         return buffer.getInt();

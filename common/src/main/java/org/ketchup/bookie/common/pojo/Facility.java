@@ -40,7 +40,7 @@ public class Facility implements BinarySerializable{
     @Override
     public void fromBytes(byte[] bytes) throws SerializationException {
         int objectSize = SerializeUtils.readHeader(bytes, SerializableDataType.OBJECT);
-        if (objectSize != 2) {
+        if (objectSize != 3) {
             throw new SerializationException("[fromBytes] Number of fields of serialized bytes does not match Facility class");
         }
         bytes = Arrays.copyOfRange(bytes, 4, bytes.length);

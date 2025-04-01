@@ -18,7 +18,7 @@ public enum FacilityType implements SerializableEnum {
 
     private final int value;
 
-    public static FacilityType fromValue(int value) {
+    public static FacilityType fromValue(Integer value) {
         return switch (value) {
             case 0 -> MEETING_ROOM;
             case 1 -> STANDARD_CLASSROOM;

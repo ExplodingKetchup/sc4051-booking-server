@@ -5,15 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middleware/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ketchup/bookieserver/Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/test/java/org/ketchup/bookie/common/pojo/AvailabilityTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/test/java/org/ketchup/bookie/common/pojo/FacilityTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/test/java/org/ketchup/bookie/common/util/SerializeUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/src/test/java/org/tomato/bookie/distributedSystem/message/RequestTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/src/test/java/org/tomato/bookie/distributedSystem/message/ResponseTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/enums/FacilityType.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/enums/FacilityType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Availability.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Availability.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Facility.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Facility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/src/main/java/org/tomato/bookie/distributedSystem/message/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/src/main/java/org/tomato/bookie/distributedSystem/message/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/src/main/java/org/tomato/bookie/distributedSystem/message/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/src/main/java/org/tomato/bookie/distributedSystem/message/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/beanfactory/MiddlewareServiceBeans.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/beanfactory/MiddlewareServiceBeans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/config/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/handler/ExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/handler/ExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/handler/ExceptionHandlerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/handler/ExceptionHandlerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/interceptor/RequestInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/interceptor/RequestInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/interceptor/RequestInterceptorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/interceptor/RequestInterceptorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/interceptor/ResponseInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/interceptor/ResponseInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/interceptor/ResponseInterceptorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/interceptor/ResponseInterceptorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/repository/BookingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/repository/BookingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/repository/FacilityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/repository/FacilityRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/service/AvailabilityMonitoringService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/AvailabilityMonitoringService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/service/BookingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/BookingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ketchup/bookie/server/util/CsvUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/util/CsvUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,26 +50,54 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2v8kEAZECy6DERu6t9pDulJJkOi" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.AvailabilityTest.availabilitySerializationTest.executor": "Run",
+    "JUnit.FacilityTest.facilitySerializationTest.executor": "Run",
+    "JUnit.RequestTest.requestSerializationTest.executor": "Run",
+    "JUnit.ResponseTest.responseSerializationTest.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeBool.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeBytes.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeEnum.executor": "Debug",
+    "JUnit.SerializeUtilsTest.serializeInt.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeLong.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeMap.executor": "Run",
+    "JUnit.SerializeUtilsTest.serializeString.executor": "Run",
+    "JUnit.SerializeUtilsTest.uuidToBytes.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "17",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/Duriana/Documents/Ketchups/SC4051/booking-server",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -50,8 +105,111 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/middleware/src/main/java" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.ketchup.bookie.common.pojo" />
+      <recent name="org.ketchup.bookie.common.util" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.tomato.bookie.distributedSystem.message" />
+      <recent name="org.ketchup.bookie.common.util" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.RequestTest.requestSerializationTest">
+    <configuration name="AvailabilityTest.availabilitySerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="common" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ketchup.bookie.common.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.pojo" />
+      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.pojo.AvailabilityTest" />
+      <option name="METHOD_NAME" value="availabilitySerializationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FacilityTest.facilitySerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="common" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ketchup.bookie.common.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.pojo" />
+      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.pojo.FacilityTest" />
+      <option name="METHOD_NAME" value="facilitySerializationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RequestTest.requestSerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="middleware" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.tomato.bookie.distributedSystem.message.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.tomato.bookie.distributedSystem.message" />
+      <option name="MAIN_CLASS_NAME" value="org.tomato.bookie.distributedSystem.message.RequestTest" />
+      <option name="METHOD_NAME" value="requestSerializationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ResponseTest.responseSerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="middleware" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.tomato.bookie.distributedSystem.message.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.tomato.bookie.distributedSystem.message" />
+      <option name="MAIN_CLASS_NAME" value="org.tomato.bookie.distributedSystem.message.ResponseTest" />
+      <option name="METHOD_NAME" value="responseSerializationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SerializeUtilsTest.uuidToBytes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="common" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ketchup.bookie.common.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.util" />
+      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.util.SerializeUtilsTest" />
+      <option name="METHOD_NAME" value="uuidToBytes" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.RequestTest.requestSerializationTest" />
+        <item itemvalue="JUnit.ResponseTest.responseSerializationTest" />
+        <item itemvalue="JUnit.AvailabilityTest.availabilitySerializationTest" />
+        <item itemvalue="JUnit.FacilityTest.facilitySerializationTest" />
+        <item itemvalue="JUnit.SerializeUtilsTest.uuidToBytes" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -70,5 +228,31 @@
       <updated>1743168493163</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
+          <line>193</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
+          <line>256</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Availability.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
