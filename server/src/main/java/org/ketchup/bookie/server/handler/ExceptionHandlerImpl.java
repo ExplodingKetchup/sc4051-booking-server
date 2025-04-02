@@ -38,6 +38,8 @@ public class ExceptionHandlerImpl implements ExceptionHandler{
         String methodNamePrefix = throwable.getMessage().split(" ")[0];
         if (methodNamePrefix.startsWith("[") && methodNamePrefix.endsWith("]")) {
             sb.append(throwable.getMessage().substring(methodNamePrefix.length()).trim());
+        } else {
+            sb.append(throwable.getMessage().trim());
         }
         if (Objects.nonNull(throwable.getCause())) {
             sb.append(" - Caused by: ").append(throwable.getCause().getClass().getName());

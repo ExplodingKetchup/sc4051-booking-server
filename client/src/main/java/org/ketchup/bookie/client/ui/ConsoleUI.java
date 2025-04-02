@@ -88,49 +88,65 @@ public class ConsoleUI {
     private void queryAvailability() throws IOException {
         System.out.println("\n=== Query Facility Availability ===");
         
-        System.out.print("Enter facility ID: ");
-        int facilityId = Integer.parseInt(scanner.nextLine().trim());
-        
-        System.out.print("Enter start time (minutes from Monday 00:00): ");
-        int checkTimeStart = Integer.parseInt(scanner.nextLine().trim());
-        
-        System.out.print("Enter end time (minutes from Monday 00:00): ");
-        int checkTimeEnd = Integer.parseInt(scanner.nextLine().trim());
-        
-        Request request = requestBuilder.buildQueryAvailabilityRequest(facilityId, checkTimeStart, checkTimeEnd);
-        Response response = clientService.sendRequest(request);
-        
-        if (response.isStatus()) {
-            System.out.println("The facility is available during the requested time period.");
-        } else {
-            System.out.println("Error: " + extractErrorMessage(response));
+        try {
+            System.out.print("Enter facility ID: ");
+            int facilityId = Integer.parseInt(scanner.nextLine().trim());
+            
+            System.out.print("Enter start time (e.g., 'Monday 14:30' or minutes from Monday 00:00): ");
+            String startTimeInput = scanner.nextLine().trim();
+            int checkTimeStart = parseTimeInput(startTimeInput);
+            
+            System.out.print("Enter end time (e.g., 'Monday 16:00' or minutes from Monday 00:00): ");
+            String endTimeInput = scanner.nextLine().trim();
+            int checkTimeEnd = parseTimeInput(endTimeInput);
+            
+            Request request = requestBuilder.buildQueryAvailabilityRequest(facilityId, checkTimeStart, checkTimeEnd);
+            Response response = clientService.sendRequest(request);
+            
+            if (response.isStatus() && !response.getData().containsKey("error")) {
+                System.out.println("The facility is available during the requested time period.");
+            } else {
+                System.out.println("Error: " + extractErrorMessage(response));
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter numeric values or use the format 'Day HH:MM'.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
     
     private void bookFacility() throws IOException {
         System.out.println("\n=== Book Facility ===");
         
-        System.out.print("Enter facility ID: ");
-        int facilityId = Integer.parseInt(scanner.nextLine().trim());
-        
-        System.out.print("Enter booking start time (minutes from Monday 00:00): ");
-        int bookingStartTime = Integer.parseInt(scanner.nextLine().trim());
-        
-        System.out.print("Enter booking end time (minutes from Monday 00:00): ");
-        int bookingEndTime = Integer.parseInt(scanner.nextLine().trim());
-        
-        Request request = requestBuilder.buildBookFacilityRequest(facilityId, bookingStartTime, bookingEndTime);
-        Response response = clientService.sendRequest(request);
-        
-        if (response.isStatus()) {
-            try {
-                int bookingId = SerializeUtils.deserializeInt(response.getData().get("bookingId"));
-                System.out.println("Booking successful! Booking ID: " + bookingId);
-            } catch (SerializationException e) {
-                System.out.println("Booking successful, but could not read booking ID.");
+        try {
+            System.out.print("Enter facility ID: ");
+            int facilityId = Integer.parseInt(scanner.nextLine().trim());
+            
+            System.out.print("Enter booking start time (e.g., 'Monday 14:30' or minutes from Monday 00:00): ");
+            String startTimeInput = scanner.nextLine().trim();
+            int bookingStartTime = parseTimeInput(startTimeInput);
+            
+            System.out.print("Enter booking end time (e.g., 'Monday 16:00' or minutes from Monday 00:00): ");
+            String endTimeInput = scanner.nextLine().trim();
+            int bookingEndTime = parseTimeInput(endTimeInput);
+            
+            Request request = requestBuilder.buildBookFacilityRequest(facilityId, bookingStartTime, bookingEndTime);
+            Response response = clientService.sendRequest(request);
+            
+            if (response.isStatus() && !response.getData().containsKey("error")) {
+                try {
+                    int bookingId = SerializeUtils.deserializeInt(response.getData().get("bookingId"));
+                    System.out.println("Booking successful! Booking ID: " + bookingId);
+                } catch (SerializationException e) {
+                    System.out.println("Booking successful, but could not read booking ID.");
+                }
+            } else {
+                System.out.println("Booking failed. Error: " + extractErrorMessage(response));
             }
-        } else {
-            System.out.println("Booking failed. Error: " + extractErrorMessage(response));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter numeric values or use the format 'Day HH:MM'.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
     
@@ -146,7 +162,7 @@ public class ConsoleUI {
         Request request = requestBuilder.buildChangeBookingRequest(bookingId, offsetTime);
         Response response = clientService.sendRequest(request);
         
-        if (response.isStatus()) {
+        if (response.isStatus() && !response.getData().containsKey("error")) {
             System.out.println("Booking changed successfully.");
         } else {
             System.out.println("Failed to change booking. Error: " + extractErrorMessage(response));
@@ -165,7 +181,7 @@ public class ConsoleUI {
         Request request = requestBuilder.buildMonitorFacilityRequest(facilityId, duration);
         Response response = clientService.sendRequest(request);
         
-        if (response.isStatus()) {
+        if (response.isStatus() && !response.getData().containsKey("error")) {
             System.out.println("Monitoring started for " + duration + " minutes.");
             clientService.startMonitorListener(duration, request.getRequestId());
             
@@ -184,7 +200,7 @@ public class ConsoleUI {
         Request request = requestBuilder.buildListFacilitiesRequest();
         Response response = clientService.sendRequest(request);
         
-        if (response.isStatus()) {
+        if (response.isStatus() && !response.getData().containsKey("error")) {
             List<Facility> facilities = new ArrayList<>();
             Map<String, byte[]> data = response.getData();
             
@@ -227,7 +243,7 @@ public class ConsoleUI {
         Request request = requestBuilder.buildExtendBookingRequest(bookingId, offsetTime);
         Response response = clientService.sendRequest(request);
         
-        if (response.isStatus()) {
+        if (response.isStatus() && !response.getData().containsKey("error")) {
             System.out.println("Booking extended successfully.");
         } else {
             System.out.println("Failed to extend booking. Error: " + extractErrorMessage(response));
@@ -237,11 +253,61 @@ public class ConsoleUI {
     private String extractErrorMessage(Response response) {
         if (response.getData().containsKey("error")) {
             try {
-                return new String(response.getData().get("error"));
+                return SerializeUtils.deserializeString(response.getData().get("error"));
             } catch (Exception e) {
                 return "Unknown error";
             }
         }
         return "Unknown error";
+    }
+    
+    /**
+     * Parses time input in either format:
+     * - Integer (minutes from Monday 00:00)
+     * - String like "Tuesday 14:30"
+     * 
+     * @param input Time input string
+     * @return Minutes from Monday 00:00
+     */
+    private int parseTimeInput(String input) {
+        // Try parsing as integer first
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            // Not a number, try parsing as day and time
+            String[] parts = input.trim().split("\\s+");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid time format. Use 'Day HH:MM' or minutes from Monday 00:00.");
+            }
+            
+            String day = parts[0].toLowerCase();
+            String time = parts[1];
+            
+            String[] timeParts = time.split(":");
+            if (timeParts.length != 2) {
+                throw new IllegalArgumentException("Invalid time format. Use 'HH:MM' format for time.");
+            }
+            
+            int hours = Integer.parseInt(timeParts[0]);
+            int minutes = Integer.parseInt(timeParts[1]);
+            
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+                throw new IllegalArgumentException("Invalid time values. Hours must be 0-23, minutes must be 0-59.");
+            }
+            
+            int dayOffset;
+            switch (day.toLowerCase()) {
+                case "monday": dayOffset = 0; break;
+                case "tuesday": dayOffset = 1; break;
+                case "wednesday": dayOffset = 2; break;
+                case "thursday": dayOffset = 3; break;
+                case "friday": dayOffset = 4; break;
+                case "saturday": dayOffset = 5; break;
+                case "sunday": dayOffset = 6; break;
+                default: throw new IllegalArgumentException("Invalid day name. Use Monday-Sunday.");
+            }
+            
+            return (dayOffset * 24 * 60) + (hours * 60) + minutes;
+        }
     }
 }

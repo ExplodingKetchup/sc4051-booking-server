@@ -114,7 +114,11 @@ public class BookingRepository implements InitializingBean {
     }
 
     public void addFacility(Facility facility) {
-        bookingTimeslots.putIfAbsent(facility.getId(), new ArrayList<>(Constants.MINUTES_IN_WEEK));
+        List<Integer> timeSlotsForFacility = new ArrayList<>(Constants.MINUTES_IN_WEEK);
+        for (int i = 0; i <= Constants.MINUTES_IN_WEEK; i++) {
+            timeSlotsForFacility.add(-1);
+        }
+        bookingTimeslots.putIfAbsent(facility.getId(), timeSlotsForFacility);
     }
 
     public void addAllFacilities(List<Facility> facilityList) {
