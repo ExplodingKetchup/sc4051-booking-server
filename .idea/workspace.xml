@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="" />
+    <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,8 +42,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Application.executor": "Run",
-    "Application.ClientApplication.executor": "Run",
+    "Application.Application.executor": "Debug",
+    "Application.ClientApplication.executor": "Debug",
     "JUnit.AvailabilityTest.availabilitySerializationTest.executor": "Run",
     "JUnit.FacilityTest.facilitySerializationTest.executor": "Run",
     "JUnit.RequestTest.requestSerializationTest.executor": "Run",
@@ -87,7 +89,7 @@
       <recent name="org.ketchup.bookie.common.util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="RunManager" selected="Application.ClientApplication">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.server.Application" />
       <module name="server" />
@@ -164,8 +166,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
         <item itemvalue="Application.ClientApplication" />
+        <item itemvalue="Application.Application" />
         <item itemvalue="JUnit.SerializeUtilsTest" />
         <item itemvalue="JUnit.RequestTest.requestSerializationTest" />
         <item itemvalue="JUnit.ResponseTest.responseSerializationTest" />
@@ -195,18 +197,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
-          <line>193</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
           <line>238</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/util/SerializeUtils.java</url>
-          <line>256</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/org/ketchup/bookie/common/pojo/Availability.java</url>
@@ -217,6 +209,21 @@
           <url>file://$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/util/CsvUtils.java</url>
           <line>30</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client/src/main/java/org/ketchup/bookie/client/ui/ConsoleUI.java</url>
+          <line>184</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client/src/main/java/org/ketchup/bookie/client/ui/ConsoleUI.java</url>
+          <line>186</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java</url>
+          <line>193</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

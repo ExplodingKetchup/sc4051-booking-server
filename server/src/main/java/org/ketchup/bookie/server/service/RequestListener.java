@@ -196,6 +196,7 @@ public class RequestListener implements InitializingBean {
                     int index = 0;
                     for (Facility facility : allFacilities) {
                         dataMap.put("facility-" + index, facility.toBytes());
+                        index++;
                     }
                     yield Response.success(request.getRequestId(), dataMap);
                 } catch (SerializationException se) {
