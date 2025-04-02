@@ -65,11 +65,13 @@ public class CommandHandler {
             System.out.print("Enter facility ID: ");
             int facilityId = Integer.parseInt(scanner.nextLine().trim());
             
-            System.out.print("Enter booking start time (minutes from start of week): ");
-            int startTime = Integer.parseInt(scanner.nextLine().trim());
+            System.out.print("Enter booking start time (e.g., 'Monday 14:30' or minutes from start of week): ");
+            String startTimeInput = scanner.nextLine().trim();
+            int startTime = parseTimeInput(startTimeInput);
             
-            System.out.print("Enter booking end time (minutes from start of week): ");
-            int endTime = Integer.parseInt(scanner.nextLine().trim());
+            System.out.print("Enter booking end time (e.g., 'Monday 16:00' or minutes from start of week): ");
+            String endTimeInput = scanner.nextLine().trim();
+            int endTime = parseTimeInput(endTimeInput);
             
             Request request = requestBuilder.buildBookFacilityRequest(facilityId, startTime, endTime);
             Response response = clientService.sendRequest(request);
@@ -82,9 +84,61 @@ public class CommandHandler {
                 System.out.println("Booking failed. Error: " + extractErrorMessage(response));
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter numeric values.");
+            System.out.println("Invalid input. Please enter numeric values or use the format 'Day HH:MM'.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         } catch (SerializationException e) {
             System.out.println("Error processing response: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Parses time input in either format:
+     * - Integer (minutes from Monday 00:00)
+     * - String like "Tuesday 14:30"
+     * 
+     * @param input Time input string
+     * @return Minutes from Monday 00:00
+     */
+    private int parseTimeInput(String input) {
+        // Try parsing as integer first
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            // Not a number, try parsing as day and time
+            String[] parts = input.trim().split("\\s+");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid time format. Use 'Day HH:MM' or minutes from Monday 00:00.");
+            }
+            
+            String day = parts[0].toLowerCase();
+            String time = parts[1];
+            
+            String[] timeParts = time.split(":");
+            if (timeParts.length != 2) {
+                throw new IllegalArgumentException("Invalid time format. Use 'HH:MM' format for time.");
+            }
+            
+            int hours = Integer.parseInt(timeParts[0]);
+            int minutes = Integer.parseInt(timeParts[1]);
+            
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+                throw new IllegalArgumentException("Invalid time values. Hours must be 0-23, minutes must be 0-59.");
+            }
+            
+            int dayOffset;
+            switch (day.toLowerCase()) {
+                case "monday": dayOffset = 0; break;
+                case "tuesday": dayOffset = 1; break;
+                case "wednesday": dayOffset = 2; break;
+                case "thursday": dayOffset = 3; break;
+                case "friday": dayOffset = 4; break;
+                case "saturday": dayOffset = 5; break;
+                case "sunday": dayOffset = 6; break;
+                default: throw new IllegalArgumentException("Invalid day name. Use Monday-Sunday.");
+            }
+            
+            return (dayOffset * 24 * 60) + (hours * 60) + minutes;
         }
     }
     
