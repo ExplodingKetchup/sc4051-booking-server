@@ -23,7 +23,7 @@ public class CsvUtils {
 
     public static List<Facility> readFacilitiesFromCsv() throws IOException {
         List<Facility> facilities = new ArrayList<>();
-        try (CSVParser csvParser = CSVFormat.DEFAULT.parse(
+        try (CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(
                 new BufferedReader(new FileReader(Constants.FACILITIES_CSV_PATH, StandardCharsets.UTF_8)))
         ) {
 
