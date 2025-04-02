@@ -156,7 +156,7 @@ byte[] marshalledRequest = request.toBytes();
 ```
 
 Reading a response:
-```java
+```javaw
 Response response = new Response();
 response.fromBytes(marshalledResponse);
 boolean status = response.isStatus();

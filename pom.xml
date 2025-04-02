@@ -12,6 +12,7 @@
         <module>common</module>
         <module>middleware</module>
         <module>server</module>
+        <module>client</module>
     </modules>
 
     <parent>

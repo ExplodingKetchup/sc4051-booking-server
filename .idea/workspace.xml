@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/facilities.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PROTOCOL.md" beforeDir="false" afterPath="$PROJECT_DIR$/PROTOCOL.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/util/CsvUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/util/CsvUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,11 +46,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Application.executor": "Debug",
+    "Application.Application.executor": "Run",
+    "Application.ClientApplication.executor": "Run",
     "JUnit.AvailabilityTest.availabilitySerializationTest.executor": "Run",
     "JUnit.FacilityTest.facilitySerializationTest.executor": "Run",
     "JUnit.RequestTest.requestSerializationTest.executor": "Run",
     "JUnit.ResponseTest.responseSerializationTest.executor": "Run",
+    "JUnit.SerializeUtilsTest.executor": "Run",
     "JUnit.SerializeUtilsTest.serializeBool.executor": "Run",
     "JUnit.SerializeUtilsTest.serializeBytes.executor": "Run",
     "JUnit.SerializeUtilsTest.serializeEnum.executor": "Debug",
@@ -90,7 +93,7 @@
       <recent name="org.ketchup.bookie.common.util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="RunManager" selected="Application.ClientApplication">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.server.Application" />
       <module name="server" />
@@ -104,34 +107,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AvailabilityTest.availabilitySerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="common" />
+    <configuration name="ClientApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.client.ClientApplication" />
+      <module name="client" />
+      <option name="PROGRAM_PARAMETERS" value="localhost 55555" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.ketchup.bookie.common.pojo.*" />
+          <option name="PATTERN" value="org.ketchup.bookie.client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.pojo" />
-      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.pojo.AvailabilityTest" />
-      <option name="METHOD_NAME" value="availabilitySerializationTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FacilityTest.facilitySerializationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="common" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.ketchup.bookie.common.pojo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.pojo" />
-      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.pojo.FacilityTest" />
-      <option name="METHOD_NAME" value="facilitySerializationTest" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -168,13 +153,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SerializeUtilsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="common" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ketchup.bookie.common.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.ketchup.bookie.common.util" />
+      <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.common.util.SerializeUtilsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ClientApplication" />
         <item itemvalue="Application.Application" />
+        <item itemvalue="JUnit.SerializeUtilsTest" />
         <item itemvalue="JUnit.RequestTest.requestSerializationTest" />
         <item itemvalue="JUnit.ResponseTest.responseSerializationTest" />
-        <item itemvalue="JUnit.AvailabilityTest.availabilitySerializationTest" />
-        <item itemvalue="JUnit.FacilityTest.facilitySerializationTest" />
       </list>
     </recent_temporary>
   </component>
