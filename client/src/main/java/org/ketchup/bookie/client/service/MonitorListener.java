@@ -34,6 +34,7 @@ public class MonitorListener extends Thread {
             socket.setSoTimeout(1000); // 1 second timeout for easier thread termination
             
             System.out.println("Monitor started. Waiting for updates...");
+            System.out.println("Listening on port " + socket.getPort());
             
             while (running && System.currentTimeMillis() < endTime) {
                 try {
@@ -42,7 +43,7 @@ public class MonitorListener extends Thread {
                     // Process the received data
                     Response response = new Response();
                     response.fromBytes(Arrays.copyOf(packet.getData(), packet.getLength()));
-                    
+                    System.out.println("Receive response with id " + response.getRequestId());
                     // Verify this is a callback for our monitoring request
                     if (response.getRequestId().equals(requestId)) {
                         // Extract availability information
