@@ -24,7 +24,7 @@ We should obtain the required executable jar files to run the server and client:
 server jar: `server/target/server-1.0-SNAPSHOT.jar`\
 client jar: `client/target/client-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
-Or you can use pre-buit JARs from `dist/`
+Or you can use pre-built JARs from `dist/`
 
 2. Run the server:
 ```commandline
