@@ -17,4 +17,7 @@ public class Config {
     @Value("${server.simulated.message.drop.rate:0.0}")
     private double simulatedMessageDropRate;
 
+    @Value("${server.simulated.response.withhold:0}")
+    private int responseWithhold;
+
 }

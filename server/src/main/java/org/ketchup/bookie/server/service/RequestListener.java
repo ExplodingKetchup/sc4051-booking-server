@@ -68,6 +68,7 @@ public class RequestListener implements InitializingBean {
     public void listenForRequests(int port) {
         // Listening on port
         byte[] buffer = new byte[SerializeUtils.MAX_SIZE];
+        int responseWithhold = config.getResponseWithhold();
 
         try (DatagramSocket socket = new DatagramSocket(port)) {
             log.info("Server is listening on port {}", port);
@@ -88,6 +89,12 @@ public class RequestListener implements InitializingBean {
                 byte[] response = handleClientRequest(packet.getData());
 
                 // Send a response back to the client
+                if (responseWithhold > 0) {
+                    responseWithhold--;
+                    continue;
+                } else if (responseWithhold == 0) {
+                    responseWithhold = config.getResponseWithhold();
+                }
                 DatagramPacket responsePacket = new DatagramPacket(
                         response, response.length, clientAddress, clientPort);
                 socket.send(responsePacket);

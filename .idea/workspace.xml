@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
