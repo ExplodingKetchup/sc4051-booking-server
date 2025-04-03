@@ -78,9 +78,13 @@ public class RequestListener implements InitializingBean {
                 socket.receive(packet); // Receive packet (blocking call)
 
                 // Process packet
-                if (messageLossSimulator.shouldDropMessage()) continue;
+                if (messageLossSimulator.shouldDropMessage()) {
+                    log.info("[listenForRequests] Simulate message loss - Skipped message");
+                    continue;
+                }
                 clientAddress = packet.getAddress();
                 clientPort = packet.getPort();
+                log.info("[listenForRequests] Received request from {}:{}", clientAddress.getHostAddress(), clientPort);
                 byte[] response = handleClientRequest(packet.getData());
 
                 // Send a response back to the client
@@ -145,6 +149,7 @@ public class RequestListener implements InitializingBean {
     }
 
     private Response handleClientRequest(Request request) throws MalformedRequestException, UnavailableFacilityException, UnavailableBookingException, MalformedResponseException {
+        log.info("[handleClientRequest] Received a {} request", request.getOperation().name());
         return switch (request.getOperation()) {
             case QUERY_AVAILABILITY -> {
                 try {
