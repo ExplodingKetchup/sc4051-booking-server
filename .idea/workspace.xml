@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/ketchup/bookie/client/ui/ConsoleUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/ketchup/bookie/client/ui/ConsoleUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/repository/BookingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/repository/BookingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,13 +65,16 @@
     "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "17",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/Duriana/Documents/Ketchups/SC4051/booking-server",
+    "last_opened_file_path": "/Users/Duriana/Documents/Ketchups/SC4051/booking-server/dist",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dist" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/" />
       <recent name="$PROJECT_DIR$/server" />
@@ -91,7 +92,7 @@
       <recent name="org.ketchup.bookie.common.util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientApplication">
+  <component name="RunManager" selected="Application.Application">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ketchup.bookie.server.Application" />
       <module name="server" />
@@ -168,8 +169,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ClientApplication" />
         <item itemvalue="Application.Application" />
+        <item itemvalue="Application.ClientApplication" />
         <item itemvalue="JUnit.SerializeUtilsTest" />
         <item itemvalue="JUnit.RequestTest.requestSerializationTest" />
         <item itemvalue="JUnit.ResponseTest.responseSerializationTest" />
