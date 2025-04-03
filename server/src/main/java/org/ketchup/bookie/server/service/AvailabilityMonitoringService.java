@@ -37,6 +37,15 @@ public class AvailabilityMonitoringService {
         subscriptionExpiry = new HashMap<>();
     }
 
+    /**
+     * Add the requested client to the subscription
+     * @param requestId
+     * @param clientAddress
+     * @param clientPort
+     * @param facilityId
+     * @param monitorDuration
+     * @throws UnavailableFacilityException
+     */
     public void addToMailingList(UUID requestId, InetAddress clientAddress, Integer clientPort, Integer facilityId, Integer monitorDuration) throws UnavailableFacilityException {
         if (facilityRepository.getFacilityById(facilityId).equals(Facility.NULL_INSTANCE)) {
             throw new UnavailableFacilityException();
@@ -50,6 +59,12 @@ public class AvailabilityMonitoringService {
         subscriptionExpiry.put(requestId, System.currentTimeMillis() + (long) monitorDuration * 60_000L);
     }
 
+    /**
+     * Invoked in a {@link org.ketchup.bookie.server.interceptor.ResponseInterceptor} every time a server successfully performs an operation which affects availability.
+     * Notify all clients subscribed to the affected facility of the current availability of that facility.
+     * Callbacks are directly sent from here.
+     * @param availability
+     */
     public void notifyClients(Availability availability) {
         if (Objects.isNull(mailingList.get(availability.getFacilityId()))) return;
         for (UUID requestId : mailingList.get(availability.getFacilityId())) {

@@ -17,14 +17,30 @@ import java.util.*;
 @Slf4j
 public class SerializeUtils {
 
+    /**
+     * Maximum size of a serialized object. Size of an object is the number of bytes (primitive) or number of key:value pair (Map/Object) or number of members (List)
+     * (equals to the maximum 6-bit unsigned integer)
+     */
     public static final int MAX_SIZE = 16777215;
 
+    /**
+     * Serialize boolean values
+     * @param boolValue
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeBool(boolean boolValue) throws SerializationException {
         byte[] bytes = new byte[1];
         bytes[0] = (byte) (boolValue ? 1 : 0);
         return wrapHeader(bytes, SerializableDataType.BOOLEAN, 1);
     }
 
+    /**
+     * Serialize int values
+     * @param intValue
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeInt(int intValue) throws SerializationException {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         buffer.order(ByteOrder.LITTLE_ENDIAN); // Set byte order to little-endian
@@ -32,6 +48,12 @@ public class SerializeUtils {
         return wrapHeader(buffer.array(), SerializableDataType.INT, 4);
     }
 
+    /**
+     * Serialize long values
+     * @param longValue
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeLong(long longValue) throws SerializationException {
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.order(ByteOrder.LITTLE_ENDIAN); // Set byte order to little-endian
@@ -39,12 +61,24 @@ public class SerializeUtils {
         return wrapHeader(buffer.array(), SerializableDataType.LONG, 8);
     }
 
+    /**
+     * Serialize String values
+     * @param stringValue
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeString(String stringValue) throws SerializationException {
         // Size check
         if (stringValue.length() > MAX_SIZE) throw new SerializationException("[serializeString] Input string to serializer is larger than maximum size");
         return wrapHeader(stringValue.getBytes(StandardCharsets.UTF_8), SerializableDataType.STRING, stringValue.length());
     }
 
+    /**
+     * Serialize Enum values
+     * @param enumValue
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeEnum(SerializableEnum enumValue) throws SerializationException {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         buffer.order(ByteOrder.LITTLE_ENDIAN); // Set byte order to little-endian
@@ -52,10 +86,24 @@ public class SerializeUtils {
         return wrapHeader(buffer.array(), SerializableDataType.ENUM, 4);
     }
 
+    /**
+     * Serialize byte[] values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeBytes(byte[] bytes) throws SerializationException {
         return wrapHeader(bytes, SerializableDataType.BYTES, bytes.length);
     }
 
+    /**
+     * Serialize Map values
+     * @param map
+     * @param valueType Type of the map's value
+     * @return
+     * @param <T>
+     * @throws SerializationException
+     */
     public static <T> byte[] serializeMap(Map<String, T> map, SerializableDataType valueType) throws SerializationException {
         if (map.size() > MAX_SIZE) throw new SerializationException("[serializeMap] Input map to serializer is larger than maximum size");
         byte[] contentBytes = new byte[0];
@@ -124,6 +172,14 @@ public class SerializeUtils {
         return wrapHeader(contentBytes, SerializableDataType.MAP, map.size());
     }
 
+    /**
+     * Serialize List values
+     * @param list
+     * @param memberType Type of the List's members
+     * @return
+     * @param <T>
+     * @throws SerializationException
+     */
     public static <T> byte[] serializeList(List<T> list, SerializableDataType memberType) throws SerializationException {
         if (list.size() > MAX_SIZE) throw new SerializationException("[serializeList] Input list to serializer is larger than maximum size");
         byte[] result = new byte[0];
@@ -186,10 +242,22 @@ public class SerializeUtils {
         return wrapHeader(result, SerializableDataType.LIST, list.size());
     }
 
+    /**
+     * Serialize Object values (not recommended to use this approach). This method is a proxy which invokes {@link BinarySerializable#toBytes()}.
+     * @param object
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] serializeObject(BinarySerializable object) throws SerializationException {
         return object.toBytes();
     }
 
+    /**
+     * Deserialize boolean values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static boolean deserializeBool(byte[] bytes) throws SerializationException {
         if (readHeader(bytes, SerializableDataType.BOOLEAN) != bytes.length-4 || bytes.length != 5) {
             log.error("[deserializeBool] Invalid byte array for bool");
@@ -198,6 +266,12 @@ public class SerializeUtils {
         return bytes[4] != 0;
     }
 
+    /**
+     * Deserialize int values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static int deserializeInt(byte[] bytes) throws SerializationException {
         if (readHeader(bytes, SerializableDataType.INT) != bytes.length-4 || bytes.length != 8) {
             log.error("[deserializeInt] Invalid byte array for int");
@@ -208,6 +282,12 @@ public class SerializeUtils {
         return buffer.getInt();
     }
 
+    /**
+     * Deserialize long values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static long deserializeLong(byte[] bytes) throws SerializationException {
         if (readHeader(bytes, SerializableDataType.LONG) != bytes.length-4 || bytes.length != 12) {
             log.error("[deserializeLong] Invalid byte array for long");
@@ -218,6 +298,12 @@ public class SerializeUtils {
         return buffer.getLong();
     }
 
+    /**
+     * Deserialize String values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static String deserializeString(byte[] bytes) throws SerializationException {
         int strlen = readHeader(bytes, SerializableDataType.STRING);
         if (strlen < 0 || strlen > MAX_SIZE || bytes.length-4 != strlen) {
@@ -227,6 +313,14 @@ public class SerializeUtils {
         return new String(Arrays.copyOfRange(bytes, 4, bytes.length), StandardCharsets.UTF_8);
     }
 
+    /**
+     * Deserialize enum values
+     * @param bytes
+     * @param enumType Class of the enum
+     * @return
+     * @param <E>
+     * @throws SerializationException
+     */
     public static <E extends SerializableEnum> E deserializeEnum(byte[] bytes, Class<E> enumType) throws SerializationException {
         if (readHeader(bytes, SerializableDataType.ENUM) != bytes.length-4 || bytes.length != 8) {
             log.error("[deserializeEnum] Invalid byte array for enum");
@@ -244,6 +338,12 @@ public class SerializeUtils {
         return null;
     }
 
+    /**
+     * Deserialize byte[] values
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] deserializeBytes(byte[] bytes) throws SerializationException {
         int bytesLen = readHeader(bytes, SerializableDataType.BYTES);
         if (bytesLen != bytes.length-4 || bytesLen < 0 || bytesLen > MAX_SIZE) {
@@ -253,6 +353,13 @@ public class SerializeUtils {
         return Arrays.copyOfRange(bytes, 4, bytes.length);
     }
 
+    /**
+     * Deserialize Map values whose values are boolean, int, long, string, and byte[]
+     * @param bytes
+     * @param valueType Type of the map's values
+     * @return
+     * @throws SerializationException
+     */
     public static Map<String, Object> deserializeMap(byte[] bytes, SerializableDataType valueType) throws SerializationException {
         int mapSize = readHeader(bytes, SerializableDataType.MAP);
         if (mapSize < 0 || mapSize > MAX_SIZE) {
@@ -288,6 +395,14 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize Map values whose values are enums
+     * @param bytes
+     * @param enumClass Class of the map values
+     * @return
+     * @param <E>
+     * @throws SerializationException
+     */
     public static <E extends SerializableEnum> Map<String, Object> deserializeMapEnumValue(byte[] bytes, Class<E> enumClass) throws SerializationException {
         int mapSize = readHeader(bytes, SerializableDataType.MAP);
         if (mapSize < 0 || mapSize > MAX_SIZE) {
@@ -312,6 +427,14 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize Map whose values are objects
+     * @param bytes
+     * @param objectClass Class of the map values
+     * @return
+     * @param <T>
+     * @throws SerializationException
+     */
     public static <T extends BinarySerializable> Map<String, Object> deserializeMapObjectValue(byte[] bytes, Class<T> objectClass) throws SerializationException {
         int mapSize = readHeader(bytes, SerializableDataType.MAP);
         if (mapSize < 0 || mapSize > MAX_SIZE) {
@@ -342,6 +465,13 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize a List whose members are boolean, int, long, String, or byte[]
+     * @param bytes
+     * @param memberType Type of the List members
+     * @return
+     * @throws SerializationException
+     */
     public static List<Object> deserializeList(byte[] bytes, SerializableDataType memberType) throws SerializationException {
         int listSize = readHeader(bytes, SerializableDataType.LIST);
         if (listSize < 0 || listSize > MAX_SIZE) {
@@ -372,6 +502,14 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize a List whose members are enums
+     * @param bytes
+     * @param enumClass the class of the list members
+     * @return
+     * @param <E>
+     * @throws SerializationException
+     */
     public static <E extends SerializableEnum> List<Object> deserializeListEnumValue(byte[] bytes, Class<E> enumClass) throws SerializationException {
         int listSize = readHeader(bytes, SerializableDataType.LIST);
         if (listSize < 0 || listSize > MAX_SIZE) {
@@ -391,6 +529,14 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize a List whose members are objects.
+     * @param bytes
+     * @param objectClass the class of the members.
+     * @return
+     * @param <T>
+     * @throws SerializationException
+     */
     public static <T extends BinarySerializable> List<Object> deserializeListObjectValue(byte[] bytes, Class<T> objectClass) throws SerializationException {
         int listSize = readHeader(bytes, SerializableDataType.MAP);
         if (listSize < 0 || listSize > MAX_SIZE) {
@@ -416,6 +562,15 @@ public class SerializeUtils {
         return result;
     }
 
+    /**
+     * Deserialize objects (Not recommended approach, please directly use {@link BinarySerializable#fromBytes(byte[])} instead).
+     * This method is a proxy to invoke {@link BinarySerializable#fromBytes(byte[])} and creating a new instance with the help of reflection.
+     * @param bytes
+     * @param objectClass
+     * @return
+     * @param <T>
+     * @throws SerializationException
+     */
     public static <T extends BinarySerializable> T deserializeObject(byte[] bytes, Class<T> objectClass) throws SerializationException {
         try {
             BinarySerializable object = objectClass.getDeclaredConstructor((Class<?>) null).newInstance();
@@ -451,6 +606,14 @@ public class SerializeUtils {
         return buffer.getInt();
     }
 
+    /**
+     * Add a 4-byte header to the start of the serialized values.
+     * @param bytes serialized values without header
+     * @param dataType type of the serialized values
+     * @param size size of the serialized values ( = number of bytes for primitive) ( = number of key:value pairs for Map/Object) ( = number of members for List)
+     * @return
+     * @throws SerializationException
+     */
     public static byte[] wrapHeader(byte[] bytes, SerializableDataType dataType, int size) throws SerializationException {
         if (size > MAX_SIZE) {
             throw new SerializationException("The size of the object to be serialized is too large");
@@ -464,6 +627,11 @@ public class SerializeUtils {
         return concatBytes(dataTypeByte, sizeBytes, bytes);
     }
 
+    /**
+     * Convert UUID to byte[] (not serialize, therefore does not include header)
+     * @param uuid
+     * @return
+     */
     public static byte[] uuidToBytes(UUID uuid) {
         ByteBuffer buffer = ByteBuffer.allocate(16); // A UUID is 16 bytes
         buffer.putLong(uuid.getMostSignificantBits());
@@ -471,6 +639,12 @@ public class SerializeUtils {
         return buffer.array();
     }
 
+    /**
+     * Convert byte[] to UUID (not deserialize, therefore will not check for header)
+     * @param bytes
+     * @return
+     * @throws SerializationException
+     */
     public static UUID uuidFromBytes(byte[] bytes) throws SerializationException {
         if (bytes.length != 16) {
             throw new SerializationException("[uuidFromBytes] Invalid byte array length for UUID conversion.");
@@ -483,6 +657,10 @@ public class SerializeUtils {
 
     /**
      * Verify if the first key found in bytes matches the field string. Return a new byte[] equals to bytes minus the field key.
+     * @param bytes
+     * @param field
+     * @return
+     * @throws SerializationException
      */
     public static byte[] verifyObjectField(byte[] bytes, String field) throws SerializationException {
         int keyLen = SerializeUtils.readHeader(bytes, SerializableDataType.STRING);
@@ -496,6 +674,11 @@ public class SerializeUtils {
         return Arrays.copyOfRange(bytes, keyLen + 4, bytes.length);
     }
 
+    /**
+     * Concatenate multiple byte[] to a single byte[].
+     * @param bytes
+     * @return
+     */
     public static byte[] concatBytes(byte[]... bytes) {
         int totalLength = 0;
         for (byte[] aByteArray : bytes) {

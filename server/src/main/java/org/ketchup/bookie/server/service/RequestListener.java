@@ -26,6 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Listens for requests, handle marshalling and unmarshalling of requests and responses.
+ * Also responsible for implementing At-Most-Once semantics and simulating message loss.
+ * Passes requests to other components, collects responses, passes responses tp other components.
+ */
 @Service
 @Slf4j
 public class RequestListener implements InitializingBean {
@@ -65,6 +70,10 @@ public class RequestListener implements InitializingBean {
         listenForRequests(config.getPort());
     }
 
+    /**
+     * Listen for requests on the specified port and send responses.
+     * @param port
+     */
     public void listenForRequests(int port) {
         // Listening on port
         byte[] buffer = new byte[SerializeUtils.MAX_SIZE];
@@ -104,6 +113,13 @@ public class RequestListener implements InitializingBean {
         }
     }
 
+    /**
+     * Handle the server workflow: deserialize request -> At-most-once semantics implementation
+     * -> Pass Request to request interceptor -> Call operation handler code -> Pass response to response interceptor
+     * -> Call exception handler in case of exception -> serialize response
+     * @param requestBytes
+     * @return
+     */
     private byte[] handleClientRequest(byte[] requestBytes) {
         // When receiving a request, deserialize it to Request object
         Request request = new Request();
@@ -155,6 +171,15 @@ public class RequestListener implements InitializingBean {
         }
     }
 
+    /**
+     * Operation handler code: Extract parameters from request -> invoke business logic services -> collect response -> wrap response in {@link Response}.
+     * @param request
+     * @return
+     * @throws MalformedRequestException
+     * @throws UnavailableFacilityException
+     * @throws UnavailableBookingException
+     * @throws MalformedResponseException
+     */
     private Response handleClientRequest(Request request) throws MalformedRequestException, UnavailableFacilityException, UnavailableBookingException, MalformedResponseException {
         log.info("[handleClientRequest] Received a {} request", request.getOperation().name());
         return switch (request.getOperation()) {
