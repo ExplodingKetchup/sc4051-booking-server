@@ -13,6 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.tomato.bookie.distributedSystem.faultolerance.Deduplicator;
+import org.tomato.bookie.distributedSystem.faultolerance.MessageLossSimulator;
 import org.tomato.bookie.distributedSystem.message.Request;
 import org.tomato.bookie.distributedSystem.message.Response;
 
@@ -30,6 +31,7 @@ import java.util.Map;
 public class RequestListener implements InitializingBean {
 
     private final Config config;
+    private final MessageLossSimulator messageLossSimulator;
     private final Deduplicator deduplicator;
     private final RequestInterceptor requestInterceptor;
     private final ExceptionHandler exceptionHandler;
@@ -43,8 +45,9 @@ public class RequestListener implements InitializingBean {
     private int clientPort;
 
 
-    public RequestListener(Config config, Deduplicator deduplicator, RequestInterceptor requestInterceptor, ExceptionHandler exceptionHandler, ResponseInterceptor responseInterceptor, BookingManager bookingManager, FacilityRepository facilityRepository, AvailabilityMonitoringService availabilityMonitoringService) {
+    public RequestListener(Config config, MessageLossSimulator messageLossSimulator, Deduplicator deduplicator, RequestInterceptor requestInterceptor, ExceptionHandler exceptionHandler, ResponseInterceptor responseInterceptor, BookingManager bookingManager, FacilityRepository facilityRepository, AvailabilityMonitoringService availabilityMonitoringService) {
         this.config = config;
+        this.messageLossSimulator = messageLossSimulator;
         this.deduplicator = deduplicator;
         this.requestInterceptor = requestInterceptor;
         this.exceptionHandler = exceptionHandler;
@@ -75,9 +78,10 @@ public class RequestListener implements InitializingBean {
                 socket.receive(packet); // Receive packet (blocking call)
 
                 // Process packet
-                byte[] response = handleClientRequest(packet.getData());
+                if (messageLossSimulator.shouldDropMessage()) continue;
                 clientAddress = packet.getAddress();
                 clientPort = packet.getPort();
+                byte[] response = handleClientRequest(packet.getData());
 
                 // Send a response back to the client
                 DatagramPacket responsePacket = new DatagramPacket(

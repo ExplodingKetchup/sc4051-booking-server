@@ -14,4 +14,7 @@ public class Config {
     @Value("${server.at_most_once.enabled:false}")
     private boolean atMostOnceEnabled;
 
+    @Value("${server.simulated.message.drop.rate:0.0")
+    private double simulatedMessageDropRate;
+
 }
