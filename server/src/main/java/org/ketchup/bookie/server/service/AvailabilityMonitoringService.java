@@ -53,12 +53,14 @@ public class AvailabilityMonitoringService {
     public void notifyClients(Availability availability) {
         if (Objects.isNull(mailingList.get(availability.getFacilityId()))) return;
         for (UUID requestId : mailingList.get(availability.getFacilityId())) {
+            log.info("Notifying request {}", requestId);
             if (System.currentTimeMillis() > subscriptionExpiry.get(requestId)) {   // Expired subscription
                 removeSubscription(requestId);
                 continue;
             }
             InetAddress clientAddress = mailingAddresses.get(requestId).getLeft();
             int clientPort = mailingAddresses.get(requestId).getRight();
+            log.info("Notified address {}:{}", clientAddress.getHostAddress(), clientPort);
             try (DatagramSocket socket = new DatagramSocket()) {
                 byte[] data = Response.success(requestId,
                         Map.of(

@@ -42,7 +42,6 @@ public class ResponseInterceptorImpl implements ResponseInterceptor {
                 log.error("[intercept] Unable to obtain facilityId, no notification will be sent");
             }
         }
-        log.info("Facility {} is affected. Notifying clients...", facilityId);
         if (facilityId >= 0) {
             Availability availability = new Availability();
             availability.setFacilityId(facilityId);
