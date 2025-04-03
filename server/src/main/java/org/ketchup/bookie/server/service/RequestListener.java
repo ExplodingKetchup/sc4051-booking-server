@@ -120,11 +120,11 @@ public class RequestListener implements InitializingBean {
 
         // At-most-once semantic checking
         if (config.isAtMostOnceEnabled()) {
-            if (deduplicator.isDuplicate(request.getRequestId())) {
+            if (deduplicator.isDuplicate(request.getRequestId()) && !request.isIdempotent()) {
                 try {
-                    return Response.error(request.getRequestId(), "Duplicate request detected").toBytes();
+                    return Response.error(request.getRequestId(), "Duplicate non-idempotent request detected").toBytes();
                 } catch (SerializationException se) {
-                    log.error("[execute] Error message serialization failed, message: [Duplicate request detected]", se);
+                    log.error("[execute] Error message serialization failed, message: [Duplicate non-idempotent request detected]", se);
                     try {
                         return Response.error(request.getRequestId()).toBytes();
                     } catch (SerializationException ex) {
