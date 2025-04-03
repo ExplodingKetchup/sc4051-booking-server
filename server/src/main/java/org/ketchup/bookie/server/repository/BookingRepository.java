@@ -84,6 +84,9 @@ public class BookingRepository implements InitializingBean {
     }
 
     public boolean extendBooking(int bookingId, int offset) throws UnavailableFacilityException {
+        if (offset < 0) {
+            throw new IllegalArgumentException("[extendBooking] Offset cannot be negative");
+        }
         Booking originalBooking = bookingMap.get(bookingId);
         if (!removeBooking(bookingId)) return false;
         return addBooking(new Booking(
@@ -103,6 +106,12 @@ public class BookingRepository implements InitializingBean {
      */
     public boolean checkAvailability(int facilityId, int startTime, int endTime) throws UnavailableFacilityException {
         List<Integer> facilityAvailability = Optional.ofNullable(bookingTimeslots.get(facilityId)).orElseThrow(UnavailableFacilityException::new);
+        if (startTime < 0 ||
+                endTime <= startTime ||
+                endTime > Constants.MINUTES_IN_WEEK
+        ) {
+            throw new IllegalArgumentException("[checkAvailability] Invalid availability checking time");
+        }
         for (int time = startTime; time < endTime; time++) {
             if (facilityAvailability.get(time) > 0) return false;
         }
