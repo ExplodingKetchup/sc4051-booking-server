@@ -73,6 +73,7 @@ public class BookingManager {
             log.error("[addBooking] Booking conflict");
             throw new UnavailableBookingException("[addBooking] Booking conflict");
         }
+        log.info("[addBooking] New booking registered: {}", bookingId);
         return bookingId;
     }
 }
