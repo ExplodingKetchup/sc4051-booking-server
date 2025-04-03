@@ -107,9 +107,10 @@ public final class Request implements BinarySerializable {
     }
 
     private boolean determineIdempotence(Operation op) {
-        return op == Operation.LIST_FACILITIES || 
-               op == Operation.QUERY_AVAILABILITY ||
-               op == Operation.MONITOR_FACILITY;
+        return op == Operation.BOOK_FACILITY ||
+                op == Operation.LIST_FACILITIES ||
+                op == Operation.QUERY_AVAILABILITY ||
+                op == Operation.MONITOR_FACILITY;
     }
 
 }
