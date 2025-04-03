@@ -30,7 +30,7 @@ public class ClientService {
         this.serverPort = config.getServerPort();
         
         try {
-            this.socket = new DatagramSocket();
+            this.socket = new DatagramSocket(55000);
             this.serverAddress = InetAddress.getByName(config.getServerIP());
         } catch (SocketException | UnknownHostException e) {
             throw new RuntimeException("Failed to initialize client service", e);
