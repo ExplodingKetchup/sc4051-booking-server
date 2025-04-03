@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a8efe5e-d836-4f3a-933d-bac885110f55" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/config/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/RequestListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +43,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Application.executor": "Run",
+    "Application.Application.executor": "Debug",
     "Application.ClientApplication.executor": "Run",
     "JUnit.AvailabilityTest.availabilitySerializationTest.executor": "Run",
     "JUnit.FacilityTest.facilitySerializationTest.executor": "Run",
@@ -228,11 +228,6 @@
           <url>file://$PROJECT_DIR$/client/src/main/java/org/ketchup/bookie/client/ui/ConsoleUI.java</url>
           <line>137</line>
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/server/src/main/java/org/ketchup/bookie/server/service/BookingManager.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -57,7 +57,7 @@ public class ClientService {
         socket.setSoTimeout(3000); // 3 seconds
         
         int retries = 0;
-        int maxRetries = config.isAtMostOnceEnabled() ? 1 : 3;
+        int maxRetries = 3;
         
         while (retries < maxRetries) {
             try {
